@@ -20,9 +20,9 @@ public class BenchmarkAsyncNetty extends CommonBenchmarkSetting {
     static MongoClient mongoClient = MongoClients.create(
             MongoClientSettings.builder()
                     .applyToConnectionPoolSettings(builder -> builder.maxSize(numSocket).minSize(0).maxWaitQueueSize(numInsert))
-                    .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress("localhost"))))
+                    .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress(mongoAddress, mongoPort))))
                     .streamFactoryFactory(NettyStreamFactoryFactory.builder().build())
-                    .writeConcern(WriteConcern.MAJORITY)
+                    .writeConcern(mongoWriteConcern)
                     .applicationName("MyApp")
                     .build());
 
@@ -30,19 +30,16 @@ public class BenchmarkAsyncNetty extends CommonBenchmarkSetting {
 
     static void setup() {
         CompletableFuture<String> future = new CompletableFuture();
-        benchCollection.drop(new SingleResultCallback<Void>() {
-            @Override
-            public void onResult(Void result, Throwable t) {
-                if (t != null) {
-                    future.completeExceptionally(t);
-                } else {
-                    future.complete("done");
-                }
-
+        benchCollection.drop((result, t) -> {
+            if (t != null) {
+                future.completeExceptionally(t);
+            } else {
+                future.complete("done");
             }
+
         });
         try {
-            System.out.println(future.get());
+            assert "done".equals(future.get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -79,19 +76,18 @@ public class BenchmarkAsyncNetty extends CommonBenchmarkSetting {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("cost: " + (System.currentTimeMillis() - start));
+
         CompletableFuture<Long> countFuture = new CompletableFuture<>();
-        benchCollection.countDocuments(new SingleResultCallback<Long>() {
-            @Override
-            public void onResult(Long result, Throwable t) {
-                if (t != null)
-                    countFuture.completeExceptionally(t);
-                else
-                    countFuture.complete(result);
-            }
+        benchCollection.countDocuments((result, t) -> {
+            if (t != null)
+                countFuture.completeExceptionally(t);
+            else
+                countFuture.complete(result);
         });
         try {
-            System.out.println("total: " + countFuture.get());
+            assert countFuture.get() == numInsert;
+            LOG.info("", numInsert, numThread, numSocket, "async netty", System.currentTimeMillis() - start);
+//            System.out.println("cost: " + (System.currentTimeMillis() - start));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

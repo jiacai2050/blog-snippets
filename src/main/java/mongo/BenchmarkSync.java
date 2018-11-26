@@ -3,30 +3,33 @@ package mongo;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
+import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 import java.util.Arrays;
 
 public class BenchmarkSync extends CommonBenchmarkSetting {
 
-    public static void main(String[] args) {
-        MongoClient mongoClient = MongoClients.create(
-                MongoClientSettings.builder()
-                        .applyToConnectionPoolSettings(builder -> builder.maxSize(numSocket).minSize(0).maxWaitQueueSize(numInsert))
-                        .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress("localhost"))))
-                        .writeConcern(WriteConcern.MAJORITY)
-                        .applicationName("MyApp")
-                        .build());
 
+    static MongoClient mongoClient = MongoClients.create(
+            MongoClientSettings.builder()
+                    .applyToConnectionPoolSettings(builder -> builder.maxSize(numSocket).minSize(0).maxWaitQueueSize(numInsert))
+                    .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress(mongoAddress, mongoPort))))
+                    .writeConcern(mongoWriteConcern)
+                    .applicationName("MyApp")
+                    .build());
 
-        MongoCollection<Document> syncCollection = mongoClient.getDatabase(database).getCollection(BenchmarkSync.collection);
+    static MongoCollection<Document> syncCollection = mongoClient.getDatabase(database).getCollection(BenchmarkSync.collection);
+
+    public static void setup() {
         syncCollection.drop();
+    }
 
+    public static void testInsert() {
+
+        setup();
         Long start = System.currentTimeMillis();
-        System.out.println("loop: " + numLoop);
 
         for (int j = 0; j < numThread; j++) {
             for (int i = 0; i < numLoop; i++) {
@@ -47,9 +50,38 @@ public class BenchmarkSync extends CommonBenchmarkSetting {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("cost: " + (System.currentTimeMillis() - start));
-        System.out.println("total docs: " + syncCollection.countDocuments());
-        syncCollection.drop();
+        assert syncCollection.countDocuments() == numInsert;
+        LOG.info("", numInsert, numThread, numSocket, "sync insert", System.currentTimeMillis() - start);
+//        System.out.println("sync cost: " + (System.currentTimeMillis() - start));
+    }
+
+    public static void testQuery() {
+
+        Long start = System.currentTimeMillis();
+
+        for (int j = 0; j < numThread; j++) {
+            for (int i = 0; i < numLoop; i++) {
+                final String id = String.format("%s-%s", j, i);
+                executor.execute(() -> {
+                    FindIterable<Document> documents = syncCollection.find(Filters.eq("_id", id));
+                    Document doc = documents.first();
+                    assert "sync-doc".equals(doc.get("name"));
+                    latch.countDown();
+                });
+            }
+        }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        LOG.info("", numInsert, numThread, numSocket, "sync query", System.currentTimeMillis() - start);
+    }
+
+    public static void main(String[] args) {
+
+//        testInsert();
+        testQuery();
         System.exit(0);
 
     }

@@ -3,11 +3,12 @@ package mongo;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
-import com.mongodb.WriteConcern;
 import com.mongodb.async.SingleResultCallback;
+import com.mongodb.async.client.FindIterable;
 import com.mongodb.async.client.MongoClient;
 import com.mongodb.async.client.MongoClients;
 import com.mongodb.async.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 import java.util.Arrays;
@@ -19,8 +20,8 @@ public class BenchmarkAsync extends CommonBenchmarkSetting {
     static MongoClient mongoClient = MongoClients.create(
             MongoClientSettings.builder()
                     .applyToConnectionPoolSettings(builder -> builder.maxSize(numSocket).minSize(0).maxWaitQueueSize(numInsert))
-                    .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress("localhost"))))
-                    .writeConcern(WriteConcern.MAJORITY)
+                    .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress(mongoAddress, mongoPort))))
+                    .writeConcern(mongoWriteConcern)
                     .applicationName("MyApp")
                     .build());
 
@@ -28,19 +29,16 @@ public class BenchmarkAsync extends CommonBenchmarkSetting {
 
     static void setup() {
         CompletableFuture<String> future = new CompletableFuture();
-        benchCollection.drop(new SingleResultCallback<Void>() {
-            @Override
-            public void onResult(Void result, Throwable t) {
-                if (t != null) {
-                    future.completeExceptionally(t);
-                } else {
-                    future.complete("done");
-                }
-
+        benchCollection.drop((result, t) -> {
+            if (t != null) {
+                future.completeExceptionally(t);
+            } else {
+                future.complete("done");
             }
+
         });
         try {
-            System.out.println(future.get());
+            assert "done".equals(future.get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -48,7 +46,7 @@ public class BenchmarkAsync extends CommonBenchmarkSetting {
         }
     }
 
-    static void benchAsync() {
+    static void testInsert() {
         setup();
         Long start = System.currentTimeMillis();
 
@@ -77,30 +75,58 @@ public class BenchmarkAsync extends CommonBenchmarkSetting {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("cost: " + (System.currentTimeMillis() - start));
-
         CompletableFuture<Long> countFuture = new CompletableFuture<>();
-        benchCollection.countDocuments(new SingleResultCallback<Long>() {
-            @Override
-            public void onResult(Long result, Throwable t) {
-                if (t != null)
-                    countFuture.completeExceptionally(t);
-                else
-                    countFuture.complete(result);
-            }
+        benchCollection.countDocuments((result, t) -> {
+            if (t != null)
+                countFuture.completeExceptionally(t);
+            else
+                countFuture.complete(result);
         });
         try {
-            System.out.println("total: " + countFuture.get());
+            assert countFuture.get() == numInsert;
+            LOG.info("", numInsert, numThread, numSocket, "async", System.currentTimeMillis() - start);
+//        System.out.println("cost: " + (System.currentTimeMillis() - start));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        setup();
+    }
+
+
+    static void testQuery() {
+        Long start = System.currentTimeMillis();
+
+        for (int j = 0; j < numThread; j++) {
+            for (int i = 0; i < numLoop; i++) {
+                final String id = String.format("%s-%s", j, i);
+
+                executor.submit(() -> {
+                    FindIterable<Document> findIterable = benchCollection.find(Filters.eq("_id", id));
+                    findIterable.first((doc, t) -> {
+                        if (null == t) {
+                            assert "sync-doc".equals(doc.get("name"));
+                        } else {
+                            System.err.println(t);
+                        }
+                        latch.countDown();
+                    });
+
+                });
+            }
+        }
+        try {
+            latch.await();
+            LOG.info("", numInsert, numThread, numSocket, "async query", System.currentTimeMillis() - start);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static void main(String[] args) {
-        benchAsync();
+//        testInsert();
+        testQuery();
         System.exit(0);
     }
 }
