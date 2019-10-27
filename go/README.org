@@ -1,0 +1,20 @@
+* json-benchmark
+
+JSON-benchmark for Go
+
+* How to run 
+
+#+BEGIN_SRC bash
+make gen
+make bench
+
+goos: darwin
+goarch: amd64
+pkg: jsonbenmark
+BenchmarkJsoncost/std-8                  1000000              1052 ns/op             240 B/op          4 allocs/op
+BenchmarkJsoncost/jsoniter-8             1000000              1268 ns/op             272 B/op          5 allocs/op
+BenchmarkJsoncost/easyjson-8             2000000               629 ns/op             336 B/op          4 allocs/op
+BenchmarkJsoncost/ffjson-8               1000000              1044 ns/op             480 B/op          7 allocs/op
+PASS
+ok      jsonbenmark     5.317s
+#+END_SRC
