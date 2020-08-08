@@ -1,0 +1,3 @@
+# ignore everything in resources dir except main.go
+src/main/resources/*
+!main.go

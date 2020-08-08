@@ -1,0 +1,18 @@
+* Cgo meet Java
+Demonstrate how to call go in Java via JNA
+- https://liujiacai.net/blog/2020/08/08/go-meet-java
+
+This repo use [[https://github.com/java-native-access/jna/blob/master/www/DirectMapping.md][direct mapping]] over interface mapping for better performance.
+
+* Setup
+Generate c-shared library
+#+begin_src bash
+make cgo
+#+end_src
+* Run
+#+begin_src
+make bad-string
+make good-string
+make return-slice
+make return-interface
+#+end_src
