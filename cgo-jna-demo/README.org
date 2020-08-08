@@ -16,3 +16,44 @@ make good-string
 make return-slice
 make return-interface
 #+end_src
+
+* Benchmark
+Bench direct-mapping vs interface-mapping in JNA
+#+begin_src
+make bench
+
+# Run complete. Total time: 00:09:32
+
+Benchmark                                   Mode  Cnt       Score       Error  Units
+DirectMappingDemo.benchDirectAdd           thrpt   20  237436.986 ±  4757.081  ops/s
+DirectMappingDemo.benchDirectHello         thrpt   20  111157.306 ± 31476.375  ops/s
+DirectMappingDemo.benchDirectHello2        thrpt   20  119656.916 ± 30578.081  ops/s
+InterfaceMappingDemo.benchInterfaceAdd     thrpt   20  195294.150 ±  7788.859  ops/s
+InterfaceMappingDemo.benchInterfaceHello   thrpt   20  120572.632 ± 28071.449  ops/s
+InterfaceMappingDemo.benchInterfaceHello2  thrpt   20  113062.652 ± 28961.001  ops/s
+
+# run one more bench
+make bench
+
+# Run complete. Total time: 00:09:34
+
+Benchmark                                   Mode  Cnt       Score       Error  Units
+DirectMappingDemo.benchDirectAdd           thrpt   20  244881.179 ±  1916.262  ops/s
+DirectMappingDemo.benchDirectHello         thrpt   20  102043.650 ± 27593.040  ops/s
+DirectMappingDemo.benchDirectHello2        thrpt   20  122430.864 ± 36225.774  ops/s
+InterfaceMappingDemo.benchInterfaceAdd     thrpt   20  176887.755 ±  1375.162  ops/s
+InterfaceMappingDemo.benchInterfaceHello   thrpt   20  119384.501 ± 27989.525  ops/s
+InterfaceMappingDemo.benchInterfaceHello2  thrpt   20  121415.617 ± 29625.753  ops/s
+
+#+end_src
+| Method | input              | output         | which is better   |   rate |
+|--------+--------------------+----------------+-------------------+--------|
+| Add    | two primitive ints | int            | direct-mapping    |   1.38 |
+| Hello  | string             | FreeableString | interface-mapping |  1.169 |
+| Hello2 | string             | Pointer        | direct-mapping    | 1.0083 |
+
+How to interpret the result:
+#+begin_quote
+Direct mapping is most effective if you restrict your function arguments and return values to primitive types (the Pointer type may be considered primitive).
+#+end_quote
+- https://stackoverflow.com/a/38081251

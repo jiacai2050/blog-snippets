@@ -5,7 +5,7 @@ ifeq ($(shell uname), Linux)
 	OUTPUT_LIB=./linux-x86-64/libawesome.so
 endif
 
-.PHONY: cgo bad-string good-string return-interface return-slice
+.PHONY: cgo bad-string good-string return-interface return-slice bench
 
 cgo:
 	cd src/main/resources && \
@@ -24,3 +24,6 @@ return-slice:
 
 return-interface:
 	mvn exec:java -Dexec.mainClass="${PACKAGE}.ReturnInterfaceDemo"
+
+bench:
+	mvn clean compile exec:java -Dexec.mainClass="${PACKAGE}.benchmark.BenchmarkRunner"

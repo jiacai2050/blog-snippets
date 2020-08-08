@@ -18,6 +18,11 @@ func Hello(msg string) *C.char {
 
 }
 
+//export Hello2
+func Hello2(msg string) *C.char {
+	return C.CString("hello2 " + strings.ToUpper(msg))
+
+}
 //export ReturnByteSlice
 func ReturnByteSlice() (unsafe.Pointer, int) {
 	bs := []byte("hello world from golang")

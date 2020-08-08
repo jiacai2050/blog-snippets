@@ -4,6 +4,7 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.PointerType;
 import com.sun.jna.Structure;
+import net.liujiacai.cgojna.gotype.FreeableString;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,18 +28,6 @@ public class AutoClosableStringDemo {
 
         protected List getFieldOrder() {
             return Arrays.asList(new String[]{"p", "n"});
-        }
-    }
-
-    public static class FreeableString extends PointerType implements AutoCloseable {
-        @Override
-        public void close() {
-            System.out.println("free pointer");
-            Native.free(Pointer.nativeValue(this.getPointer()));
-        }
-
-        public String getString() {
-            return this.getPointer().getString(0, "utf-8");
         }
     }
 
