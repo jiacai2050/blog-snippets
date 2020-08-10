@@ -7,6 +7,8 @@ import net.liujiacai.cgojna.gotype.GoString;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
+import java.io.UnsupportedEncodingException;
+
 public class DirectMappingDemo {
     static {
         Native.register("awesome");
@@ -52,7 +54,7 @@ public class DirectMappingDemo {
 //        System.out.println(ret);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
         Blackhole blackhole = new Blackhole("Today's password is swordfish. I understand instantiating Blackholes directly is dangerous.");
         benchDirectHello(blackhole,
                 new Util.ConstantFoldingHello());

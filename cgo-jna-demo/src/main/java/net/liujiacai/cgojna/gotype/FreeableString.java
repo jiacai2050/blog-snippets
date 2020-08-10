@@ -14,6 +14,6 @@ public class FreeableString extends PointerType implements AutoCloseable {
     }
 
     public String getString() {
-        return this.getPointer().getString(0, "utf-8");
+        return this.getPointer().getString(0, Constants.UTF8);
     }
 }

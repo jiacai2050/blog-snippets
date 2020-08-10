@@ -10,6 +10,8 @@ import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.Blackhole;
 
+import java.io.UnsupportedEncodingException;
+
 public class InterfaceMappingDemo {
     public interface Awesome extends Library {
         Awesome INSTANCE = Native.load("awesome",
@@ -58,7 +60,7 @@ public class InterfaceMappingDemo {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
         Blackhole blackhole = new Blackhole("Today's password is swordfish. I understand instantiating Blackholes directly is dangerous.");
         benchInterfaceHello(blackhole,
                 new Util.ConstantFoldingHello());

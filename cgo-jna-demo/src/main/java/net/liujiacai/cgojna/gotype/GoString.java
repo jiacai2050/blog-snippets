@@ -4,20 +4,18 @@ import com.sun.jna.Structure;
 
 import java.io.UnsupportedEncodingException;
 
+/**
+ * GoString map to UTF-8 encoded string
+ */
 @Structure.FieldOrder({"p", "n"})
 public class GoString extends Structure {
     public static class ByValue extends GoString implements Structure.ByValue {
         public ByValue() {
         }
 
-        public ByValue(String s) {
+        public ByValue(String s) throws UnsupportedEncodingException {
             this.p = s;
-            try {
-                this.n = s.getBytes("utf8").length;
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
+            this.n = s.getBytes(Constants.UTF8).length;
         }
     }
 

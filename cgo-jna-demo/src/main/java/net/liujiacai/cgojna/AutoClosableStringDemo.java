@@ -1,12 +1,13 @@
 package net.liujiacai.cgojna;
 
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.PointerType;
-import com.sun.jna.Structure;
+import com.sun.jna.*;
+import net.liujiacai.cgojna.gotype.Constants;
 import net.liujiacai.cgojna.gotype.FreeableString;
+import net.liujiacai.cgojna.gotype.GoString;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,28 +17,14 @@ import java.util.List;
  */
 public class AutoClosableStringDemo {
     static {
-        Native.register("awesome");
-    }
-
-    public static class GoString extends Structure {
-        public static class ByValue extends GoString implements Structure.ByValue {
-        }
-
-        public String p;
-        public long n;
-
-        protected List getFieldOrder() {
-            return Arrays.asList(new String[]{"p", "n"});
-        }
+        Native.register(NativeLibrary.getInstance("awesome",
+                Collections.singletonMap(Library.OPTION_STRING_ENCODING, Constants.UTF8)));
     }
 
     public static native FreeableString Hello(GoString.ByValue msg);
 
-    public static void main(String[] args) {
-        GoString.ByValue goStr = new GoString.ByValue();
-        String msg = "jna demo";
-        goStr.p = msg;
-        goStr.n = msg.length();
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        GoString.ByValue goStr = new GoString.ByValue("中国 China");
 
         try (FreeableString freeableString = AutoClosableStringDemo.Hello(goStr)) {
             System.out.println(freeableString.getString());
