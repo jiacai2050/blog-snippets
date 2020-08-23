@@ -1,2 +1,2 @@
 * blog-snippets
-博客文章演示代码
+[[https://liujiacai.net/][博客文章]]演示代码
