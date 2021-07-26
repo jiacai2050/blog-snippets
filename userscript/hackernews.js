@@ -3,8 +3,8 @@
 // @namespace   https://github.com/jiacai2050
 // @match       https://news.ycombinator.com/*
 // @grant       GM_addStyle
-// @version     1.0
-// @author      https://github.com/jiacai2050
+// @version     1.1
+// @author      jiacai2050
 // @icon        https://news.ycombinator.com/y18.gif
 // @description 3/10/2021, 10:29:59 AM
 // ==/UserScript==

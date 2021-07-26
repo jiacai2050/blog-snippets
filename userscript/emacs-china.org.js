@@ -3,8 +3,8 @@
 // @namespace   https://github.com/jiacai2050
 // @match       https://emacs-china.org/
 // @grant       none
-// @version     1.0
-// @author      https://github.com/jiacai2050
+// @version     1.1
+// @author      jiacai2050
 // @description Emacs-China 论坛，屏蔽指定用户的帖子
 // @icon        https://emacs-china.org/uploads/default/optimized/2X/d/dd05943671ee57856f9d7fa7ba6497f31bfcd332_2_180x180.png
 // ==/UserScript==

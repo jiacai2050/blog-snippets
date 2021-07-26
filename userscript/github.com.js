@@ -3,8 +3,8 @@
 // @namespace https://github.com/jiacai2050
 // @description Show your commented issues on github easily.
 // @match https://github.com/issues*
-// @author https://github.com/jiacai2050
-// @version 0.2.2
+// @author jiacai2050
+// @version 0.2.3
 // @icon https://github.githubassets.com/favicons/favicon.svg
 // @grant none
 // ==/UserScript==
