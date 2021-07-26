@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name        Pretty HackerNews
-// @namespace
+// @namespace   https://github.com/jiacai2050
 // @match       https://news.ycombinator.com/*
 // @grant       GM_addStyle
 // @version     1.0
-// @author      jiacai2050
+// @author      https://github.com/jiacai2050
+// @icon        https://news.ycombinator.com/y18.gif
 // @description 3/10/2021, 10:29:59 AM
 // ==/UserScript==
 
