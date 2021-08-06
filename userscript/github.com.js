@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name Github Commented Issues
-// @namespace https://github.com/jiacai2050
+// @name        Github Commented Issues
+// @namespace   https://github.com/jiacai2050
 // @description Show your commented issues on github easily.
-// @match https://github.com/issues*
-// @author jiacai2050
-// @version 0.2.3
-// @icon https://github.githubassets.com/favicons/favicon.svg
-// @grant none
+// @match       https://github.com/issues*
+// @author      jiacai2050
+// @version     0.2.3
+// @icon        https://github.githubassets.com/favicons/favicon.svg
+// @grant       none
 // ==/UserScript==
 
 function addCommentedBtn(){
