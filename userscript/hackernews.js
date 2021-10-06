@@ -1,12 +1,14 @@
 // ==UserScript==
-// @name        Pretty HackerNews
-// @namespace   https://github.com/jiacai2050
-// @match       https://news.ycombinator.com/*
-// @grant       GM_addStyle
-// @version     1.1
-// @author      jiacai2050
-// @icon        https://news.ycombinator.com/y18.gif
-// @description 3/10/2021, 10:29:59 AM
+// @name         Pretty HackerNews
+// @namespace    https://github.com/jiacai2050
+// @match        https://news.ycombinator.com/*
+// @grant        GM_addStyle
+// @version      1.1
+// @author       jiacai2050
+// @icon         https://news.ycombinator.com/y18.gif
+// @homepageURL  https://github.com/jiacai2050/blog-snippets/tree/master/userscript
+// @supportURL   https://github.com/jiacai2050/blog-snippets/issues
+// @description  美化 HN 页面
 // ==/UserScript==
 
 // https://github.com/olivierlacan/Designed-Hacker-News/blob/master/designed-hn.css

@@ -1,12 +1,14 @@
 // ==UserScript==
-// @name        Github Commented Issues
-// @namespace   https://github.com/jiacai2050
-// @description Show your commented issues on github easily.
-// @match       https://github.com/issues*
-// @author      jiacai2050
-// @version     0.2.3
-// @icon        https://github.githubassets.com/favicons/favicon.svg
-// @grant       none
+// @name         Github Commented Issues
+// @namespace    https://github.com/jiacai2050
+// @description  Show your commented issues on github easily.
+// @match        https://github.com/issues*
+// @author       jiacai2050
+// @version      0.2.3
+// @icon         https://github.githubassets.com/favicons/favicon.svg
+// @grant        none
+// @homepageURL  https://github.com/jiacai2050/blog-snippets/tree/master/userscript
+// @supportURL   https://github.com/jiacai2050/blog-snippets/issues
 // ==/UserScript==
 
 function addCommentedBtn(){
