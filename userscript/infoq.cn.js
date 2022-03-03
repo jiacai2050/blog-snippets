@@ -18,8 +18,10 @@
     'div.friendship-link-wrap',
     'div.com-app-download',
     'div.hot-ppt',
+    'div.article-extra',
     'div.widget-minibook'
   ];
+  let removed = false;
   let cleanWorker = setInterval(function() {
     let rets = [];
 
@@ -28,8 +30,11 @@
     }
 
     let sum = rets.reduce((a, b) => a+b, 0);
+    if(!removed && sum > 0) {
+      removed = true;
+    }
     console.log(`removed ${sum}`);
-    if(sum === selectorsToRemove.length || sum === 0) { // all div are removed
+    if(sum === selectorsToRemove.length || (removed && sum === 0)) { // all div are removed
       clearInterval(cleanWorker);
     }
   }, 1000);
