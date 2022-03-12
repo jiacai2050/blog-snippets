@@ -1,3 +1,5 @@
+// comment out following line to enable rust-analyzer to analyze it
+// mod expanded;
 use emacs::{defun, Env, Result, Value};
 
 emacs::plugin_is_GPL_compatible!();
