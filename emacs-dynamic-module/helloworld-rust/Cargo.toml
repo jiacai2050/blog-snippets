@@ -1,0 +1,15 @@
+[package]
+name = "helloworld-rust"
+version = "0.1.0"
+authors = ["Jiacai Liu <jiacai2050@gmail.com>"]
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+emacs = "0.18.0"
+
+[dev-dependencies]
+emacs-rs-module = { version = "0.18.0" }
