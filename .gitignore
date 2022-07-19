@@ -2,3 +2,7 @@
 *target/
 *dylib
 *.iml
+zig-cache
+zig-out
+*.o
+*.a
