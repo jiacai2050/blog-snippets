@@ -1,0 +1,4 @@
+* Blog
+- https://liujiacai.net/blog/2022/07/16/zig-intro
+* Run
+- Zig 0.9.1
