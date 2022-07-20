@@ -21,4 +21,8 @@ test "GPA" {
 
     const bytes = try allocator.alloc(u8, 100);
     defer allocator.free(bytes);
+
+    // _ = try allocator.alloc(u8, 100);
+    // 改成这样则会报
+    // Test [1/2] test "GPA"... [gpa] (err): memory address 0x100864000 leaked:
 }
