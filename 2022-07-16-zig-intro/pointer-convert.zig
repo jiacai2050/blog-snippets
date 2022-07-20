@@ -14,8 +14,12 @@ test "pointer convert" {
         var slice: []u8 = array[0..];
         try expect(@TypeOf(slice) == []u8);
 
-        var slice2: []u8 = ptr_to_array[0..];
+        var slice2: []u8 = ptr_to_array;
         try expect(@TypeOf(slice2) == []u8);
+
+        const str: [*:0]const u8 = "hello";
+        const str2: [*]const u8 = str;
+        _ = str2;
     }
     // [N]T --> [:x]T
     // [:x]T --> []T
