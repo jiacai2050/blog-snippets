@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Remove GitHub unread notification
 // @namespace   https://github.com/jiacai2050
-// @match       https://github.com/
+// @match       https://github.com/*
 // @grant       none
 // @version     0.1.0
 // @author      jiacai2050
