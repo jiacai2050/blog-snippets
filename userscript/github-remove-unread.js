@@ -14,11 +14,14 @@ function isWeekend(date = new Date()) {
 }
 
 function removeUnread() {
-  if (isWeekend) {
+  if (isWeekend()) {
     for(let unread of document.getElementsByClassName('unread')) {
       unread.remove();
     }
   }
 }
 
-window.addEventListener('load', removeUnread);
+window.addEventListener('load', () => {
+  removeUnread();
+  setTimeout(2, removeUnread);
+});
