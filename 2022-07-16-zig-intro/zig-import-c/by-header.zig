@@ -1,4 +1,4 @@
-// zig build-exe cimport.zig -lc $(pkg-config --libs raylib) $(pkc-config --cflags raylib)
+// zig build-exe cimport.zig -lc $(pkg-config --libs --cflags raylib)
 
 const std = @import("std");
 const ray = @cImport({
