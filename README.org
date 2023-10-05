@@ -1,4 +1,2 @@
 * blog-snippets
 [[https://liujiacai.net/][博客文章]]演示代码
-
-Move to https://github.com/jiacai2050/jiacai2050.github.io/tree/hugo/playground

@@ -1,18 +1,19 @@
 // ==UserScript==
-// @name         Github Commented Issues
+// @name         Enhanced Github
 // @namespace    https://github.com/jiacai2050
 // @description  Show your commented issues on github easily.
-// @match        https://github.com/issues*
+// @match        https://github.com/*
 // @author       jiacai2050
-// @version      0.2.3
+// @version      0.1.1
 // @icon         https://github.githubassets.com/favicons/favicon.svg
 // @grant        none
-// @homepageURL  https://github.com/jiacai2050/blog-snippets/tree/master/userscript
-// @supportURL   https://github.com/jiacai2050/blog-snippets/issues
+// @homepageURL  https://github.com/jiacai2050/jiacai2050.github.io/tree/hugo/playground/userscript
 // ==/UserScript==
 
+const url = window.location.href;
+
 function addCommentedBtn(){
-  let navDiv = document.querySelector('#js-pjax-container > div > div.subnav.d-flex.mb-3.flex-column.flex-md-row > nav');
+  let navDiv = document.querySelector('#issues_dashboard > div  > nav');
   for (let i=0;i<navDiv.children.length;i++) {
     let oldHref = navDiv.children[i].getAttribute('href');
     let newHref = oldHref.replace(/\+commenter.+?\+/, '+');
@@ -28,5 +29,7 @@ function addCommentedBtn(){
   mentionedBtn.insertAdjacentHTML('afterend', `<a class="${clazz}" role="tab" href="${commenterFilter}">Commented</a>`);
 }
 
-window.addEventListener('load', addCommentedBtn);
-window.addEventListener('pjax:end', addCommentedBtn);
+if (url.indexOf('github.com/issue')>-1) {
+  window.addEventListener('load', addCommentedBtn);
+  window.addEventListener('pjax:end', addCommentedBtn);
+}
