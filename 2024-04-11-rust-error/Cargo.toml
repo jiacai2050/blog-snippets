@@ -1,0 +1,20 @@
+[package]
+name = "rust-errors"
+version = "0.1.0"
+authors = ["Jiacai Liu <dev@liujiaca.net>"]
+edition = "2021"
+
+[workspace.dependencies]
+anyhow = "1"
+snafu = "0.8"
+thiserror = "1"
+
+[dependencies]
+anyhow = { workspace = true }
+snafu = { workspace = true }
+thiserror = { workspace = true }
+
+[workspace]
+members = [
+"my-lib",
+]
