@@ -1,0 +1,13 @@
+#+TITLE: Rust 错误处理
+#+DATE: 2024-04-11T11:15:24+0800
+#+LASTMOD: 2024-04-11T15:33:26+0800
+#+AUTHOR: Jiacai Liu
+
+
+为了展示出堆栈信息，需要设置下面的环境变量：
+#+begin_src bash
+export RUST_BACKTRACE=1
+#+end_src
+
+* [[file:my-lib/][my_lib]]
+这里给出了一个推荐的类库错误实现方式，采用 Snafu 实现，内部 Error 信息做了隐藏，通过暴露 ErrorKind 来暴露细节。

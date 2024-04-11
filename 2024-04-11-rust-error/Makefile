@@ -1,3 +1,8 @@
 
-run-with-trace:
-	RUST_BACKTRACE=1 cargo run
+anyhow:
+	cargo run
+
+thiserror:
+	# This demo require nightly to run
+	# https://github.com/dtolnay/thiserror/issues/282
+	cargo +nightly run --bin thiserror

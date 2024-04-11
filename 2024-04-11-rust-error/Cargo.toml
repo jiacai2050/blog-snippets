@@ -13,8 +13,25 @@ thiserror = "1"
 anyhow = { workspace = true }
 snafu = { workspace = true }
 thiserror = { workspace = true }
+my_lib = { path = "my-lib" }
 
 [workspace]
 members = [
 "my-lib",
 ]
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
+
+[[bin]]
+name = "anyhow"
+path = "src/anyhow_demo.rs"
+
+[[bin]]
+name = "thiserror"
+path = "src/thiserror_demo.rs"
+
+[[bin]]
+name = "snafu"
+path = "src/snafu_demo.rs"

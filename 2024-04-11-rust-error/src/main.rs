@@ -1,22 +1,41 @@
-mod anyhow_demo;
-mod snafu_demo;
-mod thiserror_demo;
+use snafu::{ErrorCompat, ResultExt, Snafu};
 
-use std::error::Error;
-
-fn print_error(mut error: &dyn std::error::Error) {
-    println!("Got an error:{:?}", error.to_string());
+pub fn print_error(error: &dyn std::error::Error) {
+    let mut error = error;
+    println!("Got an error:{:?}", error);
     while let Some(cause) = error.source() {
         println!("Caused by: {}", cause);
         error = cause;
     }
 }
 
+#[derive(Debug, Snafu)]
+enum ClientError {
+    #[snafu(display("{source}"))]
+    MyError {
+        // 堆栈透传
+        #[snafu(backtrace)]
+        source: my_lib::Error,
+    },
+}
+
+fn read_config() -> Result<String, ClientError> {
+    let config = my_lib::read_config().context(MySnafu {})?;
+    Ok(config)
+}
+
 fn main() {
-    if let Err(err) = anyhow_demo::read_file() {
-        println!("Error:{:?}", err);
+    if let Err(e) = read_config() {
+        println!("Read config failed, err:{}", e);
+        if let Some(bt) = ErrorCompat::backtrace(&e) {
+            eprintln!("{}", bt);
+        }
     }
-    // if let Err(err) = anyhow_demo::foobar(100) {
-    //     println!("Error:{:?}", err);
-    // }
+
+    if let Err(e) = my_lib::login(1) {
+        println!("Login failed, err:{}", e);
+        if let Some(bt) = ErrorCompat::backtrace(&e) {
+            eprintln!("{}", bt);
+        }
+    }
 }
