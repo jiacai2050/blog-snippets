@@ -48,8 +48,6 @@ pub fn foobar(i: i8) -> Result<()> {
 fn main() {
     if let Err(e) = foobar(100) {
         println!("{}", e);
-        // anyhow::Error 没有实现 std Error，所以这里用了它的 source
-        my_lib::print_error(e.source().unwrap());
     }
 
     if let Err(e) = read_file() {

@@ -51,6 +51,6 @@ fn main() {
             MyError::Io { .. } => println!("Get IO error"),
             _ => unreachable!(),
         }
-        println!("{:#?}", e);
+        println!("{}", e);
     }
 }
