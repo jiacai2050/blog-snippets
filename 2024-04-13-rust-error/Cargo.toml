@@ -13,16 +13,22 @@ thiserror = "1"
 anyhow = { workspace = true }
 snafu = { workspace = true }
 thiserror = { workspace = true }
-my_lib = { path = "my-lib" }
+snafu_lib = { path = "snafu-lib" }
+thiserror_lib = { path = "thiserror-lib" }
 
 [workspace]
 members = [
-"my-lib",
+"snafu-lib",
+"thiserror-lib",
 ]
 
 [[bin]]
-name = "main"
-path = "src/main.rs"
+name = "snafu-client"
+path = "src/snafu_client.rs"
+
+[[bin]]
+name = "thiserror-client"
+path = "src/thiserror_client.rs"
 
 [[bin]]
 name = "anyhow"

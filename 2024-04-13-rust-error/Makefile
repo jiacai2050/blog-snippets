@@ -1,8 +1,15 @@
 
 anyhow:
-	cargo run
+	cargo run --bin anyhow
 
 thiserror:
-	# This demo require nightly to run
-	# https://github.com/dtolnay/thiserror/issues/282
 	cargo +nightly run --bin thiserror
+
+snafu:
+	cargo run --bin snafu
+
+thiserror-client:
+	cargo run --bin thiserror-client
+
+snafu-client:
+	cargo run --bin snafu-client

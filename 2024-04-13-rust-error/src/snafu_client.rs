@@ -15,12 +15,12 @@ enum ClientError {
     MyError {
         // 堆栈透传
         #[snafu(backtrace)]
-        source: my_lib::Error,
+        source: snafu_lib::Error,
     },
 }
 
 fn read_config() -> Result<String, ClientError> {
-    let config = my_lib::read_config().context(MySnafu {})?;
+    let config = snafu_lib::read_config().context(MySnafu {})?;
     Ok(config)
 }
 
@@ -32,7 +32,7 @@ fn main() {
         }
     }
 
-    if let Err(e) = my_lib::login(1) {
+    if let Err(e) = snafu_lib::login(1) {
         println!("Login failed, err:{}", e);
         if let Some(bt) = ErrorCompat::backtrace(&e) {
             eprintln!("{}", bt);

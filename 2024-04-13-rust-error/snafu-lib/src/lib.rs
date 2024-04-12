@@ -1,3 +1,4 @@
+use snafu::ensure;
 use snafu::whatever;
 use snafu::Backtrace;
 use snafu::ResultExt;
@@ -49,12 +50,16 @@ enum InnerError {
     },
 }
 
-fn validate_user(user_id: i32) -> Result<(), InnerError> {
-    InvalidUserSnafu { user_id }.fail()
+fn validate_user(user_id: i32) -> Result<(), Error> {
+    ensure!(user_id != 0, InvalidUserSnafu { user_id });
+
+    Ok(())
 }
 
-fn is_user_locked(user_id: i32) -> Result<(), InnerError> {
-    UserLockedSnafu { user_id }.fail()
+fn is_user_locked(user_id: i32) -> Result<(), Error> {
+    UserLockedSnafu { user_id }.fail()?;
+
+    Ok(())
 }
 
 fn other_checks() -> Result<(), InnerError> {

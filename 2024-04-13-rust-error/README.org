@@ -1,13 +1,34 @@
 #+TITLE: Rust 错误处理
 #+DATE: 2024-04-11T11:15:24+0800
-#+LASTMOD: 2024-04-11T15:33:26+0800
+#+LASTMOD: 2024-04-12T16:29:55+0800
 #+AUTHOR: Jiacai Liu
 
+#+begin_quote
+演示文档：https://slides.liujiacai.net/rust-error
+#+end_quote
 
 为了展示出堆栈信息，需要设置下面的环境变量：
 #+begin_src bash
 export RUST_BACKTRACE=1
 #+end_src
 
-* [[file:my-lib/][my_lib]]
+* How to run
+#+begin_src bash
+# 演示如何使用 anyhow
+cargo run --bin anyhow
+# 演示如何使用 thiserror
+cargo +nightly run --bin thiserror
+# 演示如何使用 snafu
+cargo run --bin snafu
+
+# 演示如何使用 snafu-lib 这个库
+cargo run --bin snafu-client
+# 演示如何使用 thiserror-lib 这个库
+cargo run --bin thiserror-client
+#+end_src
+
+* [[file:snafu-lib][snafu_lib]]
 这里给出了一个推荐的类库错误实现方式，采用 Snafu 实现，内部 Error 信息做了隐藏，通过暴露 ErrorKind 来暴露细节。
+
+* [[file:thiserror-lib][thiserror_lib]]
+逻辑同 snafu lib，只是改用 thiserror 来实现
