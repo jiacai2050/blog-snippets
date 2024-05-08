@@ -6,8 +6,10 @@ fn read_config() -> Result<String, anyhow::Error> {
 }
 
 fn main() {
-    if let Err(e) = thiserror_lib::login(0) {
-        println!("Login failed, err:{:?}", e);
+    for id in [-1, 0, 1, 2] {
+        if let Err(e) = thiserror_lib::login(id) {
+            println!("Login failed, err:{:?}", e);
+        }
     }
 
     if let Err(e) = read_config() {

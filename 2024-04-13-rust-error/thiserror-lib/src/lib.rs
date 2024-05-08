@@ -52,14 +52,17 @@ pub fn login(id: i32) -> Result<(), MyError> {
 }
 
 fn validate_user(user_id: i32) -> Result<(), MyError> {
-    if user_id == 0 {
-        return Err(InnerError::InvalidUser { user_id })?;
-    }
+    ensure!(user_id != 0, InnerError::InvalidUser { user_id });
 
     Ok(())
 }
 
 fn is_user_locked(user_id: i32) -> Result<(), MyError> {
+    ensure!(user_id > 0, "less than zero, current:{}", user_id);
+    ensure!(user_id != 1, "user_id({user_id}) is reserved!");
+
+    ensure!(user_id != 2, InnerError::UserLocked { user_id });
+
     Err(InnerError::UserLocked { user_id })?;
 
     Ok(())
@@ -78,4 +81,23 @@ pub fn read_config() -> Result<String, MyError> {
     let body = std::fs::read_to_string("input.txt").context("couldn't open the file")?;
 
     Ok(body)
+}
+
+#[macro_export]
+macro_rules! ensure {
+    ($cond:expr, $msg:literal) => {
+        if !$cond {
+            return Err(anyhow::anyhow!($msg).into());
+        }
+    };
+    ($cond:expr, $err:expr) => {
+        if !$cond {
+            return Err($err.into());
+        }
+    };
+    ($cond:expr, $fmt:expr, $($arg:tt)*) => {
+        if !$cond {
+            return Err(anyhow::anyhow!($fmt, $($arg)*).into());
+        }
+    };
 }
