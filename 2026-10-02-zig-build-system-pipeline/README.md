@@ -1,6 +1,6 @@
 # 2026-08-01-zig-build 示例项目
 
-本项目为博客文章 **[《Zig 构建系统与编译管线全景解析》](https://liujiacai.net/blog/2026/08/01/zig-compilation-process/)** 的配套演示工程。
+本项目为博客文章 **[《Zig 构建系统（下）：编译管线与底层运行机制》](https://liujiacai.net/blog/2026/10/02/zig-build-system-pipeline/)** 的配套演示工程。
 
 ## 项目简介
 
